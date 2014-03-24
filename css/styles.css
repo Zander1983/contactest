@@ -185,3 +185,7 @@ ul {
 h1{
     font-size: 2em;
 }
+
+#errors{
+    color:#ec514e;
+}

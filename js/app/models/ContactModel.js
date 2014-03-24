@@ -15,16 +15,18 @@ define(function() {
             var errors = [];
             
             if(attrs['name'].length<1){
-                errors.push({name: 'name', error: 'Please enter your First Name'});
+                errors.push({input_tag: 'name', error: 'Please enter your First Name'});
             }
             
             if(attrs['phone']==='' && attrs['email']===''){
                 //messages['name'] = 'You must include a phone number or email';
-                errors.push({name: 'phone', error: 'You must include a phone number or email'});
+                errors.push({input_tag: 'phone', error: 'You must include a phone number or email'});
             }
             
-            if (!email_filter.test(attrs.email)){         
-                errors.push({name: 'email', error: 'Please enter a valid email address'});
+            if(attrs['email']!==''){
+                if (!email_filter.test(attrs.email)){         
+                    errors.push({input_tag: 'email', error: 'Please enter a valid email address'});
+                }
             }
             
 

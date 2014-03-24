@@ -56,20 +56,15 @@ define(function (require) {
                 
         processErrors: function(response) {
             var errors = $('#errors');
+            errors.empty();
             for (var key in response) {
-                if (response.hasOwnProperty(key)) {
-                    var field = response[key];
-               
-                    console.log('response is ');
-                    console.log(response);
-               
-                    //errors.append();
-               
-                    //$('#'+field.name);
+        
+                console.log('response[key] error is ');
+                console.log(response[key].error);
                 
-                    
-                    //pattern="not-fail"
-                }
+                errors.append(response[key].error+"<br />");
+        
+
             }
         },
 
