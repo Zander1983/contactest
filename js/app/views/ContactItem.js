@@ -15,25 +15,35 @@ define(function (require) {
         },
         
         events: {
-            "click #inner-container a"   : 'linkClicked'
+            "click #save"   : 'saveContact'
         },
         
         
-        linkClicked: function(e){
+        saveContact:function () {
     
-            e.preventDefault();
+            console.log('in saveContact');
     
-            var href = $(e.currentTarget).attr('href');
+            this.model.set({
+                name:$('#name').val(),
+                phone:$('#phone').val(),
+                email:$('#email').val(),
+            });
             
-            if (window.device.platform === 'android' || window.device.platform === 'Android') {
-                //Android ONLY - ios can you inAppBrowser
-                navigator.app.loadUrl(href, { openExternal:true });
+            this.model.isValid();
             
-            }
-            else{
-                window.open(href, '_blank');
-            }
-            
+            /*
+            if (this.model.isNew()) {
+                var self = this;
+                app.wineList.create(this.model, {
+                    success:function () {
+                        app.navigate('wines/' + self.model.id, false);
+                    }
+                });
+            } else {
+                this.model.save();
+            }*/
+
+            return false;
         },
 
         render: function () {
