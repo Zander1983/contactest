@@ -11,22 +11,27 @@ define(function() {
         
         validate: function(attrs) {
 
-            var messages = [];
-            
-            console.log('name is ');
-            console.log(attrs['name']);
-            
-            console.log('length for name is ');
-            console.log(attrs['name'].length);
+            var email_filter    = /^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/;
+            var errors = [];
             
             if(attrs['name'].length<1){
-                messages['name'] = 'You must include a name';
+                errors.push({name: 'name', error: 'Please enter your First Name'});
+            }
+            
+            if(attrs['phone']==='' && attrs['email']===''){
+                //messages['name'] = 'You must include a phone number or email';
+                errors.push({name: 'phone', error: 'You must include a phone number or email'});
+            }
+            
+            if (!email_filter.test(attrs.email)){         
+                errors.push({name: 'email', error: 'Please enter a valid email address'});
             }
             
 
-            if(_.size(messages) > 0){
-                return {isValid: false, messages: messages};
+            if(errors.length > 0){
+               return errors;
             }
+            
         }
   });
 

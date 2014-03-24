@@ -29,7 +29,15 @@ define(function (require) {
                 email:$('#email').val(),
             });
             
-            this.model.isValid();
+            console.log('isValid is ');
+            console.log(this.model.isValid());
+            
+            if (!this.model.isValid()) {
+              console.log('erros are ');
+              console.log(this.model.validationError);
+              this.processErrors(this.model.validationError);
+              
+            }
             
             /*
             if (this.model.isNew()) {
@@ -44,6 +52,25 @@ define(function (require) {
             }*/
 
             return false;
+        },
+                
+        processErrors: function(response) {
+            var errors = $('#errors');
+            for (var key in response) {
+                if (response.hasOwnProperty(key)) {
+                    var field = response[key];
+               
+                    console.log('response is ');
+                    console.log(response);
+               
+                    //errors.append();
+               
+                    //$('#'+field.name);
+                
+                    
+                    //pattern="not-fail"
+                }
+            }
         },
 
         render: function () {
