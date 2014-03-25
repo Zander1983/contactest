@@ -11,7 +11,7 @@ define(function (require) {
         
         CountryCollection = Backbone.Collection.extend({
 
-            model: CountryModel,
+            model: Country,
 
             url: 'http://restcountries.eu/rest/v1/all'
 

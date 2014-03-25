@@ -50,7 +50,6 @@ define(function (require) {
                     contact = new collections.ContactCollection;
 
                     contact.fetch({
-                        update:false,
                         success: function (collection) {
            
                             slider.slidePage(new ContactList({collection: collection}).$el);                         

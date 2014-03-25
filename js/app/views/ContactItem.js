@@ -4,12 +4,32 @@ define(function (require) {
 
     var _                   = require('underscore'),
         Backbone            = require('backbone'),
+        collection          = require('app/collections/CountryCollection'),
         tpl                 = require('text!tpl/ContactItem.html'),
         template = _.template(tpl);
 
     return Backbone.View.extend({
 
         initialize: function (options) {
+            
+            
+            var countries = new collection.CountryCollection;
+
+            countries.fetch({
+                success: function (countriescollection) {
+                    
+                    console.log('countriescollection.length is ');
+                    console.log(countriescollection.length);
+                    
+                },
+                error:   function(model, xhr, options){
+
+                    console.log('error fetching');
+
+                },
+
+            });
+            
             this.render();     
 
         },
@@ -100,7 +120,7 @@ define(function (require) {
         },
 
         render: function () {
-            this.$el.html(template(this.model.toJSON()));
+            this.$el.html(template({model:this.model.toJSON()}));
             return this;
         },
                 
