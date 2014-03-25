@@ -39,17 +39,52 @@ define(function (require) {
               this.processErrors(this.model.validationError);
             }
             
-            /*
+            console.log('saving attrs.....');
+            //console.log(attrs);
+            
+            this.model.save([],{
+                success: function(model){
+
+                    console.log('successfully saved and model is ');
+                    console.log(model);
+                    
+                    window.location.hash = "";
+
+                },
+                error: function(){
+
+                    console.log('there was an error');
+
+                }
+            });
+            
+            console.log('after the save');
+            
+            
             if (this.model.isNew()) {
-                var self = this;
-                app.wineList.create(this.model, {
-                    success:function () {
-                        app.navigate('wines/' + self.model.id, false);
-                    }
-                });
+                
+                console.log('its new');
+   
+                
             } else {
-                this.model.save();
-            }*/
+                
+                console.log('not new, so update/edit');
+            }
+            
+            /*
+            that.league.save(details, {
+                user_id:that.loginstatus.get('user_id'),
+                api_key:that.loginstatus.get('api_key'),
+                success: function(model){
+                console.log('in league save success');
+                console.log('model is ');
+                console.log(model);
+                window.location.href = "#my-leagues/"+that.loginstatus.get('user_id');
+            },
+                error: function(){
+                alert('Could not save league');
+                }
+            });*/
 
             return false;
         },
@@ -65,7 +100,7 @@ define(function (require) {
         },
 
         render: function () {
-            this.$el.html(template({model:this.model.attributes}));
+            this.$el.html(template(this.model.toJSON()));
             return this;
         },
                 
