@@ -52,18 +52,11 @@ define(function (require) {
             var errors = $('.form-errors');
             errors.remove();
 
-            if (!this.model.isValid()) {
-                
-              console.log('MODEL IS NOT VALID');
-                
-              console.log('this.model.validationError is ');
-              console.log(this.model.validationError);
-                
+            if (!this.model.isValid()) {              
               this.processErrors(this.model.validationError);
             }
             else{
                 
-            
                 this.model.save([],{
                     success: function(model){
 

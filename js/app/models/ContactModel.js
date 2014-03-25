@@ -44,7 +44,7 @@ define(function() {
             if(attrs['phone'].length>0){
                 //validate
 
-                $.when(this.checkPhoneNumber(attrs)).done(function(response){
+                $.when(this.checkPhoneNumber(attrs)).always(function(response){
 
                     if(response.valid!==true){
                         that.errors.push({input_tag: 'phone', error: 'Please enter a valid phone number'});
@@ -72,17 +72,7 @@ define(function() {
                 return $.ajax({
                     async:false,
                     url: "http://hidden-oasis-1864.herokuapp.com/check-phone-number/"+attrs['phone_country_code']+"/"+attrs['phone'],
-                    success: function(response){
-
-                        console.log('in checkPhoneNumber success');
-
-                    },
-                    error: function(){
-                          console.log("I FOUND MY PROBLEM");
-
-                          that.errors.push({input_tag: 'phone', error: 'There was an error validating the phone number'});
-                          return that.errors;
-                    }
+ 
                 });    
 
         },

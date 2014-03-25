@@ -1,31 +1,35 @@
-<div class="navigation-bar">    
 
 
-    <h1 class="center">Contacts</h1>
+    <div class="navigation-bar">    
 
-</div>
 
-<div id="inner-container">
-    <ul class="list" >
-    <% _.each(items, function(item) { 
-    %>
-    <li class="list__item" data-id="<%= item.id %>">
+        <h1 class="center">Contacts</h1>
 
-            <div class="quarter"><%= item.name %></div>
-            <div class="half">
-                <%= item.phone %>
-                <br />
-                <%= item.email %>
-            </div>
-            <div class="quarter">
-                <a href="#contact-item/<%= item.id %>">Edit</a>
-            </div>
+    </div>
 
-            
-        </li>
-    <%
-    }); %>
-    </ul>
-    
-    <a href="#contact-item/new" class="topcoat-button--large--cta">New</a>
-</div>
+    <div id="inner-container">
+        <ul class="list" >
+        <% _.each(items, function(item) { 
+        %>
+        <li class="list__item" data-id="<%= item.id %>">
+
+                <div class="quarter"><%= item.name %></div>
+                <div class="half">
+                    <%= item.phone %>
+                    <br />
+                    <%= item.email %>
+                </div>
+                <div class="quarter">
+                    <a href="#contact-item/<%= item.id %>">Edit</a>
+                </div>
+
+
+            </li>
+        <%
+        }); %>
+        </ul>
+
+        <div class='right'>
+            <a href="#contact-item/new" class="topcoat-button--large--cta">New</a>
+        </div>
+    </div>
