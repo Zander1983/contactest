@@ -14,8 +14,6 @@ define(function (require) {
             });
 
 
-    return {
-        CountryCollection: CountryCollection
-    };
+    return CountryCollection;
 
 });

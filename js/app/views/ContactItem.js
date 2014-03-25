@@ -4,7 +4,7 @@ define(function (require) {
 
     var _                   = require('underscore'),
         Backbone            = require('backbone'),
-        collection          = require('app/collections/CountryCollection'),
+        CountryCollection          = require('app/collections/CountryCollection'),
         tpl                 = require('text!tpl/ContactItem.html'),
         template = _.template(tpl),
         that;
@@ -14,20 +14,13 @@ define(function (require) {
         initialize: function (options) {
             that = this;
             
-            this.countries = new collection.CountryCollection;
+            //get a list of countries and their codes
+            this.countries = new CountryCollection;
 
             this.countries.fetch({
-                success: function (countriescollection) {
-                    
-                    that.render(); 
-                    
-                },
-                error:   function(model, xhr, options){
-
-                    console.log('error fetching');
-
-                },
-
+                success: function (collection) {                   
+                    that.render();                  
+                }
             });
             
                 
@@ -38,7 +31,9 @@ define(function (require) {
             "click #save"   : 'saveContact'
         },
         
-        
+        /*
+         * Set attributes, validate and save model
+         */
         saveContact:function () {
     
             this.model.set({
@@ -48,70 +43,50 @@ define(function (require) {
                 phone_country_code:$('#phone_country_code').val(),
             });
             
-            
+            //remove error divs if there are any
             var errors = $('.form-errors');
             errors.remove();
 
-            if (!this.model.isValid()) {              
-              this.processErrors(this.model.validationError);
+            if (!this.model.isValid()) {  
+                //isValid() calls validate() function in model         
+                this.processErrors(this.model.validationError);
             }
             else{
                 
                 this.model.save([],{
                     success: function(model){
-
-                        console.log('successfully saved and model is ');
-                        console.log(model);
-
+                        //if successful, go back to contact list
                         window.location.hash = "";
 
                     },
                     error: function(){
 
-                        console.log('there was an error');
+                        alert('There was a problem saving the record, please try again');
 
                     }
                 });
                 
             }
 
-            //console.log(attrs);
-            
-
-            
-
-            
-            /*
-            that.league.save(details, {
-                user_id:that.loginstatus.get('user_id'),
-                api_key:that.loginstatus.get('api_key'),
-                success: function(model){
-                console.log('in league save success');
-                console.log('model is ');
-                console.log(model);
-                window.location.href = "#my-leagues/"+that.loginstatus.get('user_id');
-            },
-                error: function(){
-                alert('Could not save league');
-                }
-            });*/
-
-            return false;
         },
                 
+        /*
+         * Create error messages and display after problematic input
+         */             
         processErrors: function(response) {
 
             for (var key in response) {
-                
-                $('#'+response[key].input_tag).after('<div class="form-errors">'+response[key].error+'</div>');
-        
+                $('#'+response[key].input_tag).after('<div class="form-errors">'+response[key].error+'</div>'); 
 
             }
         },
 
         render: function () {
-    
-            this.$el.html(template({model:this.model.toJSON(), countries:this.countries.toJSON()}));
+   
+            //render the template with countries and the model (may be empty if new contact)
+            this.$el.html(template({model:this.model.toJSON(), countries:this.countries.toJSON()}));       
+            $('#name').focus();
+            
             return this;
         },
                 

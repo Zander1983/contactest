@@ -6,10 +6,7 @@ define(function (require) {
         Backbone    = require('backbone'),
         PageSlider  = require('app/utils/pageslider'),
         slider = new PageSlider($('body')),
-        contact,
-        that;
-
-
+        contacts;
 
     return Backbone.Router.extend({
 
@@ -18,47 +15,25 @@ define(function (require) {
             "contact-item/new": "newContactItem",
             "contact-item/:id": "getContactItem",
         },
-        
 
         
         initialize: function() {
-                
-            that =  this;
-            
-     
-            $.ajaxPrefilter( function( options, originalOptions, jqXHR ) {
-             
-           });
 
-
-          //  $.ajaxStart(function(){ console.log('in the ajaxStart'); });
-
-           
-            // Tell jQuery to watch for any 401 or 403 errors and handle them appropriately
-            $.ajaxSetup({
-     
-            });
         },
                 
         getContacts: function(){
 
-            require(["app/collections/ContactCollection", "app/views/ContactList"], function (collections, ContactList) {
+            require(["app/collections/ContactCollection", "app/views/ContactList"], function (ContactCollection, ContactList) {
 
-                
-              
 
-                    contact = new collections.ContactCollection;
+                    contacts = new ContactCollection;
 
-                    contact.fetch({
-                        success: function (collection) {
-           
-                            slider.slidePage(new ContactList({collection: collection}).$el);                         
-                      
-
+                    contacts.fetch({
+                        success: function (collection) {          
+                            slider.slidePage(new ContactList({collection: collection}).$el);                                          
                         },
                         error:   function(model, xhr, options){
-                           
-
+                           alert('There was an error getting the list of conatacts. Please try again');
                         },
 
                     });
@@ -68,12 +43,32 @@ define(function (require) {
         
         
         getContactItem: function (id) {
-            
-            console.log('in getContactItem');
            
-            require(["app/views/ContactItem"], function (ContactItem) {
+            require(["app/collections/ContactCollection", "app/views/ContactItem"], function (ContactCollection, ContactItem) {
+                
+                if(typeof(contacts)!=='undefined' && contacts!==null){
+                    //should go in here, and get the specific model and pass to the view
+                    slider.slidePage(new ContactItem({model: contacts.get(id)}).$el);
+                }
+                else{
+                    //if in here, user has refreshed the contact-item page so contacts collection
+                    //is now empty. Get it again and pass specific model to the view
+                    contacts = new ContactCollection;
 
-                 slider.slidePage(new ContactItem({model: contact.get(id)}).$el);
+                    contacts.fetch({
+                        success: function (collection) {
+           
+                            slider.slidePage(new ContactItem({model: collection.get(id)}).$el);                                       
+
+                        },
+                        error:   function(model, xhr, options){                           
+                            alert('There was an error getting the list of conatacts. Please try again');
+                        },
+
+                    });
+                    
+                }
+                 
                                  
             });
         },

@@ -8,7 +8,5 @@ define(['app/models/ContactModel'], function (ContactModel) {
   	url: 'http://hidden-oasis-1864.herokuapp.com/contacts'
   });
 
-    return {
-        ContactCollection: ContactCollection
-    };
+    return ContactCollection;
 });

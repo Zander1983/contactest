@@ -12,16 +12,21 @@ define(function() {
 	   'name'  : null,
            'email': '',
            'phone': '',
-           'phone_phone_country_code_code': ''
+           'phone_country_code': ''
   	},
         
         initialize: function(){
             that = this;
         },
         
+        /*
+         * Validate inputs:
+         * 1/ Make sure name has at least one character
+         * 2/ Make sure email or phone number entered
+         */
+        
         validate: function(attrs) {
 
-            var name_filter = /[a-zA-Z'.,-\s]+/;
             var email_filter    = /^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/;
             that.errors = [];
             
@@ -30,10 +35,10 @@ define(function() {
             }
             
             if(attrs['phone']==='' && attrs['email']===''){
-                //messages['name'] = 'You must include a phone number or email';
                 that.errors.push({input_tag: 'phone', error: 'You must include a phone number or email'});
             }
             
+            //If there is something in email inout, validate its a proper email
             if(attrs['email']!==''){
                 if (!email_filter.test(attrs.email)){         
                     that.errors.push({input_tag: 'email', error: 'Please enter a valid email address'});
@@ -41,16 +46,27 @@ define(function() {
             }
             
            
-            if(attrs['phone'].length>0){
-                //validate
+            if(attrs['phone'].length>0 || attrs['phone_country_code'].length>0){
+                //if there is a phone number or country code entered, validate them
+                //use jquery when() function to wait for ajax to execute before moving on. Otherwise, 
+                //validate function would return no error and isValid() would succeed
+                
+                
+                if(attrs['phone'].length===0 || attrs['phone_country_code'].length===0){
+                        //If in here, user has only filled out one of the 2 inouts required for
+                        //a proper phone contact. Tell them to fill out both
+                            that.errors.push({input_tag: 'phone', error: 'You need to enter both country and phone number'});
+                }
+                else{
+                    //check the phone number agsinst the country code
+                    $.when(this.checkPhoneNumber(attrs)).always(function(response){
 
-                $.when(this.checkPhoneNumber(attrs)).always(function(response){
+                        if(response.valid!==true){
+                            that.errors.push({input_tag: 'phone', error: 'Please enter a valid country code and phone number'});
+                        }   
 
-                    if(response.valid!==true){
-                        that.errors.push({input_tag: 'phone', error: 'Please enter a valid country code and phone number'});
-                    }   
-
-                });
+                    });
+                }
                 
                 if(that.errors.length > 0){     
                     return that.errors;
@@ -66,7 +82,9 @@ define(function() {
             
         },
         
-        
+            /*
+             * Validate phone number against country code
+             */
             checkPhoneNumber: function(attrs){
 
                 return $.ajax({
