@@ -186,6 +186,6 @@ h1{
     font-size: 2em;
 }
 
-#errors{
+.form-errors{
     color:#ec514e;
 }

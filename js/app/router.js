@@ -69,12 +69,31 @@ define(function (require) {
         
         
         getContactItem: function (id) {
-            
-            console.log('in getContactItem');
-            
+           
             require(["app/views/ContactItem"], function (ContactItem) {
 
                  slider.slidePage(new ContactItem({model: contact.get(id)}).$el);
+                                 
+            });
+        },
+                
+                
+        wineDetails:function (id) {
+            this.before(function () {
+                var wine = app.wineList.get(id);
+                app.showView('#content', new WineView({model:wine}));
+            });
+        },
+
+        newContactItem:function () {
+            this.before(function () {
+                app.showView('#content', new WineView({model:new Wine()}));
+            });
+            
+            
+            require(["app/models/ContactModel", "app/views/ContactItem"], function (model, ContactItem) {
+
+                 slider.slidePage(new ContactItem({model: new model.ContactModel()}).$el);
                                  
             });
         },

@@ -11,6 +11,7 @@ define(function() {
         
         validate: function(attrs) {
 
+            var name_filter = /[a-zA-Z'.,-\s]+/;
             var email_filter    = /^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/;
             var errors = [];
             

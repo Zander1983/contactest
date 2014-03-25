@@ -32,11 +32,11 @@ define(function (require) {
             console.log('isValid is ');
             console.log(this.model.isValid());
             
+            var errors = $('.form-errors');
+            errors.remove();
+
             if (!this.model.isValid()) {
-              console.log('erros are ');
-              console.log(this.model.validationError);
               this.processErrors(this.model.validationError);
-              
             }
             
             /*
@@ -55,14 +55,10 @@ define(function (require) {
         },
                 
         processErrors: function(response) {
-            var errors = $('#errors');
-            errors.empty();
+
             for (var key in response) {
-        
-                console.log('response[key] error is ');
-                console.log(response[key].error);
                 
-                errors.append(response[key].error+"<br />");
+                $('#'+response[key].input_tag).after('<div class="form-errors">'+response[key].error+'</div>');
         
 
             }
