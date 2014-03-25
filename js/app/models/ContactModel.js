@@ -1,5 +1,10 @@
 define(function() {
-  var ContactModel = Backbone.Model.extend({
+  
+    var that,
+    $           = require('jquery'),
+  
+    
+    ContactModel = Backbone.Model.extend({
 
   	urlRoot: 'http://hidden-oasis-1864.herokuapp.com/contacts',
   	
@@ -7,35 +12,83 @@ define(function() {
 	   'name'  : null,
            'email': '',
            'phone': '',
+           'phone_phone_country_code_code': ''
   	},
+        
+        initialize: function(){
+            that = this;
+        },
         
         validate: function(attrs) {
 
             var name_filter = /[a-zA-Z'.,-\s]+/;
             var email_filter    = /^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/;
-            var errors = [];
+            this.errors = [];
             
             if(attrs['name'].length<1){
-                errors.push({input_tag: 'name', error: 'Please enter your First Name'});
+                this.errors.push({input_tag: 'name', error: 'Please enter your First Name'});
             }
             
             if(attrs['phone']==='' && attrs['email']===''){
                 //messages['name'] = 'You must include a phone number or email';
-                errors.push({input_tag: 'phone', error: 'You must include a phone number or email'});
+                this.errors.push({input_tag: 'phone', error: 'You must include a phone number or email'});
             }
             
             if(attrs['email']!==''){
                 if (!email_filter.test(attrs.email)){         
-                    errors.push({input_tag: 'email', error: 'Please enter a valid email address'});
+                    this.errors.push({input_tag: 'email', error: 'Please enter a valid email address'});
                 }
             }
             
+           
+            if(attrs['phone'].length>0){
+                //validate
 
-            if(errors.length > 0){
-               return errors;
+                $.when(this.checkPhoneNumber(attrs)).done(function(response){
+
+                    if(response.valid!==true){
+                        that.errors.push({input_tag: 'phone', error: 'Please enter a valid phone number'});
+                    }   
+
+                });
+                
+                if(that.errors.length > 0){     
+                    return that.errors;
+                }
+                
+            }
+            else{
+  
+                if(this.errors.length > 0){
+                   return this.errors;
+                }
             }
             
-        }
+        },
+        
+        
+            checkPhoneNumber: function(attrs){
+
+                return $.ajax({
+                    async:false,
+                    url: "http://hidden-oasis-1864.herokuapp.com/check-phone-number/"+attrs['phone_country_code']+"/"+attrs['phone'],
+                    success: function(response){
+
+                        console.log('in checkPhoneNumber success');
+
+                    },
+                    error: function(){
+                          console.log("I FOUND MY PROBLEM");
+
+                          that.errors.push({input_tag: 'phone', error: 'There was an error validating the phone number'});
+                          return that.errors;
+                    }
+                });    
+
+        },
+        
+
+        
   });
 
   return ContactModel;

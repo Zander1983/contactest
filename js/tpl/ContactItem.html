@@ -16,13 +16,20 @@
     <br />
     <br />
     
-    <input type="text" class="topcoat-text-input--large two-thirds" id="country" placeholder="country" value="">
-    <br />
-    <br />
-    
-    <select class="topcoat-text-input--large two-thirds" id="country">
+    <select class="topcoat-text-input--large two-thirds" id="phone_country_code">
       <option value = "0">Select Country</option>
+      <%
+        _.each(countries, function(country) { 
+      %>
+      <option value = "<%= country.alpha2Code %>" <% if(model.phone_country_code===country.alpha2Code){print('selected')}  %> >
+          <%= country.name %>
+      </option>
+      <%
+        });
+      %>      
     </select>
+    <br />
+    <br />
     
     <input type="text" class="topcoat-text-input--large two-thirds" id="phone" placeholder="phone" value="<%= model.phone %>" >
     <br />

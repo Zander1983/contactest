@@ -6,20 +6,20 @@ define(function (require) {
         Backbone            = require('backbone'),
         collection          = require('app/collections/CountryCollection'),
         tpl                 = require('text!tpl/ContactItem.html'),
-        template = _.template(tpl);
+        template = _.template(tpl),
+        that;
 
     return Backbone.View.extend({
 
         initialize: function (options) {
+            that = this;
             
-            
-            var countries = new collection.CountryCollection;
+            this.countries = new collection.CountryCollection;
 
-            countries.fetch({
+            this.countries.fetch({
                 success: function (countriescollection) {
                     
-                    console.log('countriescollection.length is ');
-                    console.log(countriescollection.length);
+                    that.render(); 
                     
                 },
                 error:   function(model, xhr, options){
@@ -30,7 +30,7 @@ define(function (require) {
 
             });
             
-            this.render();     
+                
 
         },
         
@@ -41,55 +41,52 @@ define(function (require) {
         
         saveContact:function () {
     
-            console.log('in saveContact');
-    
             this.model.set({
                 name:$('#name').val(),
                 phone:$('#phone').val(),
                 email:$('#email').val(),
+                phone_country_code:$('#phone_country_code').val(),
             });
             
-            console.log('isValid is ');
-            console.log(this.model.isValid());
             
             var errors = $('.form-errors');
             errors.remove();
 
             if (!this.model.isValid()) {
+                
+              console.log('MODEL IS NOT VALID');
+                
+              console.log('this.model.validationError is ');
+              console.log(this.model.validationError);
+                
               this.processErrors(this.model.validationError);
             }
+            else{
+                
             
-            console.log('saving attrs.....');
+                this.model.save([],{
+                    success: function(model){
+
+                        console.log('successfully saved and model is ');
+                        console.log(model);
+
+                        window.location.hash = "";
+
+                    },
+                    error: function(){
+
+                        console.log('there was an error');
+
+                    }
+                });
+                
+            }
+
             //console.log(attrs);
             
-            this.model.save([],{
-                success: function(model){
 
-                    console.log('successfully saved and model is ');
-                    console.log(model);
-                    
-                    window.location.hash = "";
-
-                },
-                error: function(){
-
-                    console.log('there was an error');
-
-                }
-            });
             
-            console.log('after the save');
-            
-            
-            if (this.model.isNew()) {
-                
-                console.log('its new');
-   
-                
-            } else {
-                
-                console.log('not new, so update/edit');
-            }
+
             
             /*
             that.league.save(details, {
@@ -120,7 +117,8 @@ define(function (require) {
         },
 
         render: function () {
-            this.$el.html(template({model:this.model.toJSON()}));
+    
+            this.$el.html(template({model:this.model.toJSON(), countries:this.countries.toJSON()}));
             return this;
         },
                 
