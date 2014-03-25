@@ -52,10 +52,15 @@ h1{
     color:#ec514e;
 }
 
-#cancel-div{
+.float-right{
+   float:right;
+}
+
+.float-left{
     float:left;
 }
 
-#save-div{
-    floght:right;
+#save{
+    width:300px;
 }
+

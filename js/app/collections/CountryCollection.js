@@ -4,14 +4,9 @@ define(function (require) {
 
     var Backbone            = require('backbone'),
         
-        Country = Backbone.Model.extend({  
-
-        }),
 
         
         CountryCollection = Backbone.Collection.extend({
-
-            model: Country,
 
             url: 'http://restcountries.eu/rest/v1/all'
 
@@ -20,7 +15,6 @@ define(function (require) {
 
 
     return {
-        Country: Country,
         CountryCollection: CountryCollection
     };
 

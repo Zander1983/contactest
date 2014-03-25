@@ -16,7 +16,7 @@
     <br />
     <br />
     
-    <select class="topcoat-text-input--large full" id="phone_country_code">
+    <select class="topcoat-text-input--large third" id="phone_country_code">
       <option value = "0">Select Country</option>
       <%
         _.each(countries, function(country) { 
@@ -28,19 +28,18 @@
         });
       %>      
     </select>
+    
+    <input type="text" class="topcoat-text-input--large two-thirds" id="phone" placeholder="phone" value="<%= model.phone %>" >
     <br />
     <br />
     
-    <input type="text" class="topcoat-text-input--large full" id="phone" placeholder="phone" value="<%= model.phone %>" >
-    <br />
-    <br />
-    
-    <div class='left half' id='cancel-div'>
-        <a href="#">Cancel</a>
-    </div>
+        <div class='float-left'>
+            <a href="#" >Cancel</a>
+        </div>
 
-    <div class='right half' id='save-div'>
-        <button class="topcoat-button--large--cta" id="save">Save</button>
-    </div>
+        <div class='float-right'>
+            <button class="topcoat-button--large--cta" id="save">Save</button>
+        </div>
+   
 </div>
  

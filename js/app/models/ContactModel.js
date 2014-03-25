@@ -23,20 +23,20 @@ define(function() {
 
             var name_filter = /[a-zA-Z'.,-\s]+/;
             var email_filter    = /^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/;
-            this.errors = [];
+            that.errors = [];
             
             if(attrs['name'].length<1){
-                this.errors.push({input_tag: 'name', error: 'Please enter your First Name'});
+                that.errors.push({input_tag: 'name', error: 'Please enter your First Name'});
             }
             
             if(attrs['phone']==='' && attrs['email']===''){
                 //messages['name'] = 'You must include a phone number or email';
-                this.errors.push({input_tag: 'phone', error: 'You must include a phone number or email'});
+                that.errors.push({input_tag: 'phone', error: 'You must include a phone number or email'});
             }
             
             if(attrs['email']!==''){
                 if (!email_filter.test(attrs.email)){         
-                    this.errors.push({input_tag: 'email', error: 'Please enter a valid email address'});
+                    that.errors.push({input_tag: 'email', error: 'Please enter a valid email address'});
                 }
             }
             
@@ -47,7 +47,7 @@ define(function() {
                 $.when(this.checkPhoneNumber(attrs)).always(function(response){
 
                     if(response.valid!==true){
-                        that.errors.push({input_tag: 'phone', error: 'Please enter a valid phone number'});
+                        that.errors.push({input_tag: 'phone', error: 'Please enter a valid country code and phone number'});
                     }   
 
                 });
@@ -59,8 +59,8 @@ define(function() {
             }
             else{
   
-                if(this.errors.length > 0){
-                   return this.errors;
+                if(that.errors.length > 0){
+                   return that.errors;
                 }
             }
             
