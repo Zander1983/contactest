@@ -1,23 +1,4 @@
 
-
-
-
-
-.list li {
-    position: relative;
-    text-align: left;
-    clear: both;
-    padding:20px;
-}
-
-.list li div{
-    float:left;
-}
-
-
-
-/**************MINE**********************/
-
 body{
     overflow:hidden;
 }
@@ -31,9 +12,17 @@ ul.list{
     margin-bottom: 20px;
 }
 
-ul li{
+
+.list li {
+    position: relative;
+    text-align: left;
+    clear: both;
+    padding:20px;
     border-bottom: 1px solid #9daca9;
-    padding:10px;
+}
+
+.list li div{
+    float:left;
 }
 
 #inner-container{
