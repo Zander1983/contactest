@@ -20,6 +20,8 @@ define(function (require) {
 
         render: function () {
    
+            //If colelction is not empty, load ContactList template
+   
             if(this.collection.length>0){
                 this.$el.html(template({items:this.collection.toJSON()}));
             }
